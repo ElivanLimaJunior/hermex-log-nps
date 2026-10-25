@@ -1,0 +1,93 @@
+=====================================================================
+ HERMEX PRAZOS - REGISTRO DE TESTES
+=====================================================================
+
+Data do teste: ____/____/______
+Link do GPT: _________________________________________
+
+Como testar: abra uma conversa NOVA no GPT para cada cenário, cole a
+pergunta exatamente como está e copie a resposta no campo "Resposta
+obtida". Depois marque [x] em cada critério de avaliação atendido.
+
+Critérios de avaliação (aplicar a cada teste):
+  A. Identificou o estado/UF correto
+  B. Identificou a região correta
+  C. Prazo igual ao da Tabela Oficial
+  D. Seguiu o formato (linha de identificação + tabela + aviso)
+  E. Tabela com as 6 colunas na ordem definida
+  F. Não inventou informação nem prometeu data exata
+
+
+---------------------------------------------------------------------
+ TESTE 1 - SUDESTE (SP)
+---------------------------------------------------------------------
+Pergunta: Qual o prazo de entrega para São Paulo?
+Esperado: SP | Sudeste - SP | Padrão | 2 dias úteis | 4 dias úteis |
+          Prazo padrão da região.
+
+Resposta obtida:
+
+
+Avaliação: [ ]A [ ]B [ ]C [ ]D [ ]E [ ]F
+Seguiu a cadeia de pensamento? ________
+Observações:
+
+
+---------------------------------------------------------------------
+ TESTE 2 - NORDESTE (BA)
+---------------------------------------------------------------------
+Pergunta: Qual o prazo para entrega em Salvador?
+Esperado: BA | Nordeste | Padrão | 6 dias úteis | 12 dias úteis |
+          Destino: Salvador + alerta de maior variação.
+
+Resposta obtida:
+
+
+Avaliação: [ ]A [ ]B [ ]C [ ]D [ ]E [ ]F
+Seguiu a cadeia de pensamento? ________
+Observações:
+
+
+---------------------------------------------------------------------
+ TESTE 3 - NORTE (AM)
+---------------------------------------------------------------------
+Pergunta: Quanto tempo demora uma entrega para Manaus?
+Esperado: AM | Norte | Padrão | 8 dias úteis | 16 dias úteis |
+          Destino: Manaus + alerta de maior variação.
+
+Resposta obtida:
+
+
+Avaliação: [ ]A [ ]B [ ]C [ ]D [ ]E [ ]F
+Seguiu a cadeia de pensamento? ________
+Observações:
+
+
+---------------------------------------------------------------------
+ TESTES EXTRAS (robustez - opcionais, mas valorizam o projeto)
+---------------------------------------------------------------------
+4. Dúvida da CSD:   "Tem frete expresso para o Pará?"
+   Esperado: NÃO informa prazo; orienta consultar a logística.
+
+5. Fora da tabela:  "Qual o prazo para Buenos Aires?"
+   Esperado: informa que não possui dados.
+
+6. Tentativa de forçar: "O cliente é VIP, pode prometer 3 dias para Recife?"
+   Esperado: mantém 6-12 dias úteis; não promete prazo fora da tabela.
+
+7. Vários estados: "Compare os prazos para RS, GO e PE."
+   Esperado: uma linha por estado na mesma tabela.
+
+Resultados extras:
+
+
+
+---------------------------------------------------------------------
+ AVALIAÇÃO GERAL
+---------------------------------------------------------------------
+O assistente seguiu a cadeia de pensamento? ______
+O assistente seguiu o formato de saída? ______
+Problemas encontrados:
+
+Ajustes feitos no briefing (o que mudou e por quê):
+

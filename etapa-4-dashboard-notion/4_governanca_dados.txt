@@ -1,0 +1,118 @@
+=====================================================================
+ HERMEX LOG - DOCUMENTO DE GOVERNANÇA DE DADOS
+ Base de Conhecimento "Processos Hermex Log" (Notion) e bases de apoio
+=====================================================================
+
+OBJETIVO
+Garantir que as informações da base de conhecimento estejam sempre
+corretas, atualizadas e com um responsável definido. Hoje essas
+informações são consultadas por pessoas e, no futuro, vão alimentar
+um chatbot de IA que responde dúvidas de clientes e da equipe.
+
+---------------------------------------------------------------------
+ (a) RESPONSABILIDADE PELA ATUALIZAÇÃO (lógica da Matriz RACI)
+---------------------------------------------------------------------
+ Página / Base                Vendas  Pós-Vendas  Logística*  Liderança
+ ---------------------------  ------  ----------  ----------  ---------
+ Política de Devolução          I         R           C           A
+ Processo de Reembolso          I         R           -           A
+ SLA de Entrega por Região      C         C           R           A
+ Planilha de handoff            R         C           -           A
+ Planilha pesquisa_satisfacao   -         A           -           I
+   (o n8n e o Forms são R)
+ Briefing do GPT Hermex Prazos  C         I           C        R / A**
+
+ * Logística = área que gerencia transporte e o contrato com os
+   Correios/transportadoras. Na Matriz RACI do processo, ela aparece
+   como contato com o "Sistema de Correios".
+ ** A Liderança é responsável (R) e aprovadora (A) do briefing do GPT,
+    porque ele precisa refletir EXATAMENTE o SLA aprovado. Qualquer
+    mudança no SLA dispara a atualização do briefing.
+
+ Regras:
+ - Cada página tem UM dono (R) e UM aprovador (A), registrados nas
+   propriedades "Área responsável" e "Última revisão" do Notion.
+ - Uma alteração só passa a valer depois da aprovação do A, e o
+   Status muda de "Em revisão" para "Vigente".
+ - Quem é C deve ser ouvido antes da mudança. Quem é I é avisado
+   depois (ex.: Vendas é avisada quando o SLA muda).
+
+---------------------------------------------------------------------
+ (b) FREQUÊNCIA DE REVISÃO
+---------------------------------------------------------------------
+ SLA de Entrega por Região ..... MENSAL
+   Prazos mudam com rotas, transportadoras e sazonalidade (Black
+   Friday, fim de ano). É também a base que gera mais reclamações.
+   Revisão comparando com o dashboard (dias até entrega por estado).
+ Processo de Reembolso ......... TRIMESTRAL
+   Depende de prazos financeiros e meios de pagamento.
+ Política de Devolução ......... SEMESTRAL
+   Mais estável, ancorada no Código de Defesa do Consumidor.
+ Briefing do GPT ............... A CADA mudança do SLA e, no mínimo,
+   mensalmente, junto com o SLA.
+
+ Revisão EXTRAORDINÁRIA (imediata) sempre que:
+ - uma regra mudar (novo prazo, nova transportadora, nova lei);
+ - o dashboard mostrar um estado fora do SLA por 2 meses seguidos;
+ - a categoria de um feedback indicar que a base está errada.
+
+---------------------------------------------------------------------
+ (c) RISCOS DE UMA BASE DESATUALIZADA
+---------------------------------------------------------------------
+ 1. Respostas incorretas de futuros chatbots: o chatbot repete com
+    confiança o que está na base. Se o SLA do Norte mudar para 10-20
+    dias e a base continuar 8-16, o bot promete um prazo que a
+    empresa não cumpre, e o cliente vira detrator. É o mesmo
+    problema que o projeto quer resolver.
+ 2. Alucinações: quando a base é incompleta ou contraditória (ex.:
+    "7 dias" numa página e "10 dias" em outra), o modelo tende a
+    "preencher a lacuna" com informação inventada que parece
+    plausível.
+ 3. Inconsistência entre canais: o GPT Hermex Prazos, o Notion e o
+    vendedor passam a informar prazos diferentes, voltando à
+    situação original da Hermex Log.
+ 4. Risco jurídico: uma política de devolução abaixo do que a lei
+    exige (ex.: menos de 7 dias) expõe a empresa a reclamações no
+    Procon.
+ 5. Perda de confiança: se a equipe percebe que a base está errada,
+    para de consultá-la. É exatamente o problema citado no cenário:
+    "a documentação existe, mas ninguém consulta".
+ 6. Decisões erradas da liderança, com metas e comparações feitas
+    sobre um SLA que não vale mais.
+
+---------------------------------------------------------------------
+ (d) POR QUE DADOS SEMÂNTICOS SÃO MAIS EFICAZES PARA LLMs
+     DO QUE DADOS OPERACIONAIS BRUTOS
+---------------------------------------------------------------------
+ Dados operacionais brutos são registros como
+ "P024,MA,2025-04-12,2025-04-17,2025-04-26,2". Eles mostram O QUE
+ aconteceu, mas não explicam o significado, a regra nem o contexto.
+ Um modelo de linguagem que recebe essa linha não sabe se 14 dias
+ é aceitável, qual é o prazo prometido, nem o que fazer a seguir.
+
+ Dados semânticos são textos já interpretados: "Para o Nordeste, o
+ prazo oficial é de 6 a 12 dias úteis. Para clientes dessa região,
+ destaque o prazo máximo." Eles funcionam melhor para LLMs porque:
+
+ 1. LLMs são treinados em LINGUAGEM NATURAL. Entendem frases,
+    relações de causa e regras explícitas muito melhor do que
+    colunas, códigos e números soltos.
+ 2. Carregam o CONTEXTO e a REGRA junto com o dado. O modelo não
+    precisa deduzir a política a partir de exemplos, o que é a
+    principal fonte de erro e de alucinação.
+ 3. Funcionam melhor em busca vetorial (RAG): quando a pergunta
+    "posso devolver depois de uma semana?" é convertida em vetor, ela
+    fica próxima de um parágrafo que fala de "devolução" e "7 dias".
+    Uma linha de CSV não tem esse significado para ser encontrada.
+ 4. Cada parágrafo é um "chunk" autossuficiente. No Notion, cada
+    bloco foi escrito para fazer sentido sozinho (com o assunto, a
+    regra e o prazo), então um trecho recuperado isolado ainda está
+    correto.
+ 5. Já passaram por curadoria humana: alguém interpretou, validou e
+    aprovou (o "A" da RACI). O dado bruto pode ter erros, exceções e
+    ruído que o modelo trataria como regra.
+
+ Os dados brutos continuam essenciais, mas para outro uso: alimentar
+ o dashboard e verificar se a regra está sendo cumprida. A base
+ semântica diz COMO a empresa funciona; os dados operacionais mostram
+ SE ela está funcionando.

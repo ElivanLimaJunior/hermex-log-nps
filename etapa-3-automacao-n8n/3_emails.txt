@@ -1,0 +1,69 @@
+=====================================================================
+ ETAPA 3 - MODELOS DE E-MAIL (nós Gmail)
+=====================================================================
+Já configurados no hermex_nps_automacao.json. A sintaxe {{$json['campo']}}
+insere o valor do campo vindo do nó anterior.
+
+---------------------------------------------------------------------
+ E-MAIL 1 - NOTIFICAÇÃO À EQUIPE DE PÓS-VENDAS (caminho detrator)
+ Nó: "Notificar pós-vendas"
+---------------------------------------------------------------------
+Para: <e-mail da equipe de pós-vendas. Nos testes, use um TempEmail>
+
+Assunto:
+[Detrator NPS] {{$json['categoria']}} - Pedido {{$json['id_pedido']}} ({{$json['cliente']}})
+
+Corpo:
+Olá, equipe de Pós-Vendas!
+
+Recebemos uma avaliação de cliente detrator que precisa de tratamento.
+
+Cliente: {{$json['cliente']}}
+E-mail: {{$json['email_cliente']}}
+Pedido: {{$json['id_pedido']}} - Estado: {{$json['estado']}}
+Nota NPS: {{$json['nota_nps']}}
+Categoria (classificada por IA): {{$json['categoria']}}
+
+Comentário original do cliente:
+"{{$json['comentario']}}"
+
+VALIDAÇÃO HUMANA: a categoria foi sugerida automaticamente por IA.
+Leia o comentário original e confirme se a classificação está correta
+antes de tratar o caso. Resposta bruta da IA: {{$json['resposta_ia']}}
+
+Próximos passos:
+1. Validar a categoria.
+2. Entrar em contato com o cliente em até 24h.
+3. Registrar o tratamento.
+
+-- Automação Hermex Log (n8n)
+
+---------------------------------------------------------------------
+ E-MAIL 2 - AGRADECIMENTO AO CLIENTE (caminho nota >= 6)
+ Nó: "Agradecer cliente"
+---------------------------------------------------------------------
+Para: {{$json['email_cliente']}}
+
+Assunto:
+Obrigado pela sua avaliação, {{$json['cliente']}}!
+
+Corpo:
+Olá, {{$json['cliente']}}!
+
+Muito obrigado por avaliar a entrega do seu pedido {{$json['id_pedido']}}.
+Sua opinião é muito importante para continuarmos melhorando.
+
+Se quiser contar mais alguma coisa, é só responder este e-mail.
+
+Um abraço,
+Equipe Hermex Log
+
+---------------------------------------------------------------------
+ OBSERVAÇÕES
+---------------------------------------------------------------------
+- Formato: texto simples (emailType = text). Menos chance de cair em spam.
+- Opção "Append n8n Attribution" desligada: senão o n8n adiciona
+  "This email was sent automatically with n8n" no rodapé.
+- A regra do enunciado (detrator = nota < 6) manda as notas 6, 7 e 8
+  para o agradecimento. Pela metodologia NPS, 6 é detrator e 7-8 são
+  neutros. Melhoria futura: um e-mail diferente para neutros.

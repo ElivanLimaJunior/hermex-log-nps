@@ -1,0 +1,100 @@
+=====================================================================
+ ETAPA 4 - DASHBOARD DE NPS NO LOOKER STUDIO
+=====================================================================
+
+---------------------------------------------------------------------
+ PASSO 1 - CONECTAR A FONTE DE DADOS
+---------------------------------------------------------------------
+ 1. lookerstudio.google.com > Criar > Relatório.
+ 2. Conector "Planilhas Google" > planilha pesquisa_satisfacao >
+    aba pesquisa_satisfacao (a do dataset, NÃO a de respostas do Forms)
+    > "Usar a primeira linha como cabeçalho" marcado > Adicionar.
+ 3. Nome do relatório: "Hermex Log — Dashboard NPS e SLA".
+
+---------------------------------------------------------------------
+ PASSO 2 - AJUSTAR OS TIPOS DOS CAMPOS
+---------------------------------------------------------------------
+ Recurso > Gerenciar fontes de dados adicionadas > Editar:
+   estado ............ Geográfico > Subdivisão do país (1º nível)
+   data_pedido ....... Data e hora > Data (AAAAMMDD)
+   data_envio ........ Data e hora > Data (AAAAMMDD)
+   data_recebimento .. Data e hora > Data (AAAAMMDD)
+   nota_nps .......... Número (agregação padrão: Nenhuma ou Média)
+   id_pedido, cliente, email_cliente, comentario ... Texto
+
+ !! Atenção ao mapa: o campo estado tem só a sigla ("SP"). O tipo
+ "Subdivisão do país" espera o código ISO "BR-SP" ou o nome
+ "São Paulo". Se o mapa não pintar algum estado, crie o campo:
+     estado_geo = CONCAT("BR-", estado)
+ e defina estado_geo como Geográfico > Subdivisão do país (1º nível).
+ Use estado_geo no mapa e estado nas demais visualizações.
+
+---------------------------------------------------------------------
+ PASSO 3 - CAMPOS CALCULADOS (Adicionar um campo)
+---------------------------------------------------------------------
+ Promotores ........ IF(nota_nps > 8, 1, 0)
+ Detratores ........ IF(nota_nps < 7, 1, 0)
+ NPS ............... (SUM(Promotores)/COUNT(nota_nps)) - (SUM(Detratores)/COUNT(nota_nps))
+                     Tipo: Número > Porcentagem
+ Dias até envio .... DATE_DIFF(data_envio, data_pedido)
+                     Agregação no gráfico: Média
+ Dias até entrega .. DATE_DIFF(data_recebimento, data_pedido)
+                     Agregação no gráfico: Média
+
+ Por que Promotores e Detratores são 1/0? Somar 1/0 = contar. A
+ SUM(Promotores) dá quantos promotores existem no filtro atual.
+
+ Por que NPS já tem SUM/COUNT dentro? Ele é uma métrica "agregada":
+ o Looker recalcula a fórmula para cada grupo (cada estado, o total
+ etc.). No gráfico, deixe a agregação como "Auto". Se aparecer como
+ "Soma", é o problema citado no troubleshooting do enunciado.
+
+ Atenção: DATE_DIFF conta dias CORRIDOS. O SLA (GPT/Notion) é em
+ dias ÚTEIS. Por isso a média de entrega do Nordeste (~11,8 dias)
+ parece "fora" do SLA de 6-12 dias úteis, mas não está.
+
+---------------------------------------------------------------------
+ PASSO 4 - VISUALIZAÇÕES
+---------------------------------------------------------------------
+ Layout sugerido (página paisagem):
+ ┌──────────────────────────────────────────────────────────────┐
+ │  Hermex Log — NPS e SLA de Entrega      [filtro: estado]     │
+ ├──────────────┬──────────────┬──────────────┬─────────────────┤
+ │ NPS geral    │ Promotores   │ Detratores   │ Respostas       │
+ ├──────────────┴──────────────┼──────────────┴─────────────────┤
+ │  (b) Mapa do Brasil         │  (c) Barras: dias até entrega  │
+ │      NPS por estado         │      por estado                │
+ ├─────────────────────────────┴────────────────────────────────┤
+ │  (d) Tabela: estado | respostas | NPS | dias envio | entrega │
+ └──────────────────────────────────────────────────────────────┘
+
+ (a) SCORECARDS (Adicionar gráfico > Visão geral)
+     - NPS (métrica: NPS)
+     - Total de promotores (métrica: Promotores, agregação Soma)
+     - Total de detratores (métrica: Detratores, agregação Soma)
+     - (extra) Total de respostas (Contagem de id_pedido)
+
+ (b) MAPA (Adicionar gráfico > Mapa geográfico / Google Maps preenchido)
+     Dimensão: estado_geo (ou estado) | Métrica: NPS | Região: Brasil
+     Estilo > Cores: Mínimo = vermelho, Máximo = azul
+     (meio opcional: branco ou amarelo)
+
+ (c) BARRAS (Adicionar gráfico > Barras)
+     Dimensão: estado | Métrica: Dias até entrega (Média)
+     Ordenar: Dias até entrega, decrescente
+     (extra: linha de referência com a média geral)
+
+ (d) TABELA (Adicionar gráfico > Tabela)
+     Dimensão: estado
+     Métricas: Contagem de id_pedido (renomeie "Respostas"), NPS,
+               Dias até envio (Média), Dias até entrega (Média)
+     Estilo: mapa de calor na coluna NPS (opcional)
+
+ Extra: Adicionar um controle > Lista suspensa > estado (filtro).
+
+---------------------------------------------------------------------
+ PASSO 5 - CONFERIR OS NÚMEROS
+---------------------------------------------------------------------
+ Compare com 2_valores_esperados.txt. Se bater, o dashboard está certo.
+ Depois: Compartilhar > "Qualquer pessoa com o link pode ver" e salve
+ o link para o README. Tire prints.

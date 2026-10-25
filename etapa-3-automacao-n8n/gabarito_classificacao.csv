@@ -1,0 +1,28 @@
+id_pedido,nota_nps,comentario,categoria_esperada,observacao
+P002,4,Produto chegou com a caixa amassada e fora do prazo,Atraso,Embalagem + atraso: prioridade Atraso
+P004,2,Atraso absurdo de mais de 10 dias e ninguém informou nada,Atraso,
+P006,3,Produto veio com defeito e a entrega atrasou,Defeito,Defeito + atraso: prioridade Defeito
+P007,1,Pior experiência de compra que já tive. Produto errado e sem resposta do suporte,Defeito,Produto errado + atendimento: prioridade Defeito
+P009,3,Demora excessiva para o Nordeste. Inaceitável,Atraso,
+P012,2,Mais de duas semanas para chegar. Região Norte é sempre esquecida,Atraso,
+P013,5,Prazo razoável mas o produto veio sem nota fiscal,Outro,Nota fiscal
+P016,3,Atraso de quase duas semanas para a Bahia,Atraso,
+P018,1,Produto chegou quebrado depois de 15 dias. Quero reembolso,Defeito,Defeito + atraso: prioridade Defeito
+P020,5,Demorou mais do que o prometido mas chegou inteiro,Atraso,
+P021,2,Atraso enorme e produto com avaria. Péssimo,Defeito,Avaria + atraso: prioridade Defeito
+P024,2,Quase um mês para receber. Absurdo,Atraso,
+P027,3,Nordeste sempre com atraso. Precisam melhorar a logística regional,Atraso,
+P030,4,Atraso significativo. Produto ok mas o prazo não,Atraso,
+P032,1,Entrega demorou demais e veio com defeito. Quero devolução,Defeito,Defeito + atraso: prioridade Defeito
+P035,5,Demorou um pouco mais que o previsto,Atraso,
+P036,3,Atraso de 12 dias. Inaceitável para uma empresa de logística,Atraso,
+P039,2,Norte do Brasil é terra de ninguém para essa empresa,Outro,AMBÍGUO: não cita o problema; IA pode responder Atraso
+P041,4,Atraso e falta de informação sobre rastreamento,Atraso,
+P044,3,Mais uma vez atraso para o Nordeste. Já é recorrente,Atraso,
+P046,1,Produto extraviado. Tive que abrir reclamação formal,Outro,AMBÍGUO: extravio não tem categoria própria
+P049,5,Poderia melhorar o prazo para o Sul,Atraso,
+P050,2,Demora absurda para Manaus. Produto com avaria,Defeito,Avaria + atraso: prioridade Defeito
+P052,4,Atraso e sem atualização de rastreio,Atraso,
+P055,3,Nordeste continua com problemas sérios de prazo,Atraso,
+P057,4,Atraso de 12 dias. Produto ok mas o prazo não,Atraso,
+P059,2,Região Norte precisa de atenção urgente. 15 dias é demais,Atraso,

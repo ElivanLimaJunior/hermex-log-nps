@@ -1,0 +1,66 @@
+=====================================================================
+ HERMEX LOG - MATRIZ RACI DO PÓS-VENDAS
+ (aba "Matriz RACI" da planilha handoff_vendas_posvenda)
+=====================================================================
+
+LEGENDA
+  R = Responsible (Responsável): quem EXECUTA a atividade.
+      Sistemas podem ser R.
+  A = Accountable (Aprovador): quem RESPONDE pelo resultado e aprova.
+      Regra de ouro: exatamente UM "A" por atividade, e sempre uma
+      PESSOA ou equipe (sistema não responde por nada).
+  C = Consulted (Consultado): é ouvido antes/durante (mão dupla).
+  I = Informed (Informado): é avisado do resultado (mão única).
+  - = não participa.
+
+COMO MONTAR NO GOOGLE SHEETS
+  1. Abra a planilha handoff_vendas_posvenda.
+  2. Clique no "+" no rodapé para criar uma aba e renomeie para
+     "Matriz RACI".
+  3. Arquivo > Importar > Fazer upload > matriz_raci.csv
+     -> Local de importação: "Substituir a página atual"
+     -> Tipo de separador: Vírgula
+  4. Formatação sugerida: negrito na linha 1 e na coluna A; congelar
+     linha 1 e coluna A (Ver > Congelar); formatação condicional com
+     cores por letra:
+       R = verde | A = vermelho | C = amarelo | I = azul
+
+MATRIZ
++---------------------------------------------+------+------+-----+--------+------+
+| Atividade                                   |Vendas|PósV. | n8n |Correios|Lider.|
++---------------------------------------------+------+------+-----+--------+------+
+| Registrar envio na planilha de handoff      |  R   |  I   |  I  |   C    |  A   |
+| Enviar e-mail de notificação ao pós-vendas  |  I   |  A   |  R  |   -    |  I   |
+| Transportar e atualizar rastreio da entrega |  I   |  A   |  -  |   R    |  -   |
+| Verificar entrega e aguardar se não confirm.|  -   |  A   |  R  |   C    |  -   |
+| Abrir ocorrência de atraso e informar clien.|  I   |  R   |  -  |   C    |  A   |
+| Confirmar entrega e registrar data receb.   |  -   |  A   |  I  |   R    |  -   |
+| Enviar pesquisa de satisfação               |  -   |  A   |  R  |   -    |  I   |
+| Registrar resposta NPS na planilha          |  -   |  A   |  R  |   -    |  I   |
+| Classificar feedback com IA                 |  -   |  A   |  R  |   -    |  I   |
+| Notificar equipe sobre cliente detrator     |  I   |  I   |  R  |   -    |  A   |
+| Validar classificação e tratar reclamação   |  C   |  R   |  -  |   C    |  A   |
+| Enviar e-mail de agradecimento ao cliente   |  -   |  A   |  R  |   -    |  -   |
+| Analisar indicadores de NPS e SLA           |  I   |  R   |  -  |   -    |  A   |
++---------------------------------------------+------+------+-----+--------+------+
+
+DECISÕES E JUSTIFICATIVAS
+- Registrar envio: Vendas executa (R) porque é quem fecha o pedido e
+  tem os dados. A Liderança é A porque o handoff é o ponto mais
+  crítico entre as duas equipes e precisa de um "dono" acima delas.
+- Tudo que o n8n executa tem o Pós-Vendas como A: o sistema faz, mas
+  a equipe responde se o e-mail não sair ou a pesquisa não for enviada.
+- Notificar detrator: a Liderança é A para garantir que nenhum
+  detrator fique sem tratamento (é um indicador de negócio).
+- Validar classificação: a IA classifica, mas o Pós-Vendas (R) confere
+  e trata. Esta é a VALIDAÇÃO HUMANA do processo.
+- Correios como C em várias linhas: fornecem informação de rastreio,
+  mas não executam atividades internas da Hermex.
+
+CHECAGENS DE QUALIDADE DA MATRIZ
+  [x] Toda atividade tem exatamente 1 "A"
+  [x] Toda atividade tem pelo menos 1 "R"
+  [x] Nenhum sistema (n8n, Correios) é "A"
+  [x] 13 atividades (mínimo exigido: 6)
+  [x] 5 papéis exigidos: Vendas, Pós-Vendas, Sistema N8N,
+      Sistema de Correios, Liderança

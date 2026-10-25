@@ -1,0 +1,58 @@
+=====================================================================
+ HERMEX PRAZOS - CONFIGURAÇÃO DO GPT CUSTOMIZADO (passo a passo)
+=====================================================================
+
+Onde: chatgpt.com -> menu lateral "GPTs" -> "+ Criar" -> aba "Configurar"
+(use a aba "Configurar", não a "Criar": assim você controla cada campo)
+
+---------------------------------------------------------------------
+ CAMPOS
+---------------------------------------------------------------------
+
+NOME:
+  Hermex Prazos
+
+DESCRIÇÃO:
+  Assistente logístico da Hermex Log que informa o prazo estimado de
+  entrega por estado de destino, de forma padronizada para a equipe
+  comercial.
+
+INSTRUÇÕES:
+  Copie e cole TODO o conteúdo do arquivo 2_briefing_hermex_prazos.txt
+
+QUEBRA-GELOS (iniciadores de conversa):
+  1. Qual o prazo para entrega em Salvador?
+  2. Qual o prazo de entrega para São Paulo?
+  3. Quanto tempo demora uma entrega para Manaus?
+  4. Compare os prazos para RS, GO e PE.
+
+CONHECIMENTO (upload de arquivos):
+  Nenhum. A tabela de prazos já está nas instruções.
+  (Motivo: menos fontes = menos chance de o GPT misturar informações.)
+
+CAPACIDADES / RECURSOS:
+  [ ] Pesquisa na web        -> DESMARCAR (não deve buscar prazos fora da tabela)
+  [ ] Tela / Canvas          -> DESMARCAR (quadro branco, desnecessário)
+  [ ] Geração de imagens     -> DESMARCAR
+  [ ] Interpretador de código / Análise de dados -> DESMARCAR
+
+AÇÕES:
+  Nenhuma.
+
+COMPARTILHAMENTO (ao salvar):
+  "Somente eu" ou "Qualquer pessoa com o link" (para mostrar no
+  portfólio). Não precisa publicar na loja de GPTs.
+
+---------------------------------------------------------------------
+ POR QUE DESABILITAR OS RECURSOS?
+---------------------------------------------------------------------
+- Pesquisa na web: o GPT poderia trazer prazos dos Correios ou de
+  outras transportadoras e misturar com os da Hermex. Isso quebra a
+  padronização, que é o objetivo do projeto.
+- Imagens, canvas e código: não têm função aqui. Recursos ligados sem
+  necessidade aumentam a chance de comportamentos inesperados.
+
+---------------------------------------------------------------------
+ DEPOIS DE SALVAR
+---------------------------------------------------------------------
+- Execute os testes do arquivo 4_testes_assistente.txt.

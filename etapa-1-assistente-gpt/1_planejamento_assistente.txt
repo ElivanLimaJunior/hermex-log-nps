@@ -1,0 +1,178 @@
+=====================================================================
+ HERMEX LOG - PLANEJAMENTO DO ASSISTENTE "HERMEX PRAZOS"
+ Etapa 1 - Documento de planejamento + Matriz CSD
+=====================================================================
+
+---------------------------------------------------------------------
+ (a) O PROBLEMA A SER RESOLVIDO
+---------------------------------------------------------------------
+
+A equipe comercial da Hermex Log informa prazos de entrega diferentes
+para o mesmo destino. Cada vendedor usa a própria experiência ou
+"chuta" um prazo para fechar a venda. Isso gera:
+
+  - Expectativas irreais nos clientes (principalmente Norte e Nordeste);
+  - Reclamações de atraso mesmo quando a entrega está dentro do SLA;
+  - NPS baixo nas regiões mais distantes;
+  - Falta de padrão e de rastreabilidade sobre o que foi prometido.
+
+Evidência nos dados (pesquisa_satisfacao.csv, 60 respostas):
+
+  Região        Prazo real (dias úteis, pedido -> recebimento)   NPS
+  SP            0 a 3                                            +92
+  RJ e MG       2 a 6                                            -45
+  Sul          2 a 6                                            -8
+  Centro-Oeste  3 a 5                                            -33
+  Nordeste      6 a 9                                            -100
+  Norte         8 a 10                                           -100
+
+  Leitura: Nordeste e Norte ficam DENTRO do SLA da empresa
+  (NE 6-12, N 8-16 dias úteis) e mesmo assim têm NPS -100. Os
+  comentários falam em "atraso", ou seja, o cliente esperava menos.
+  O problema é de COMUNICAÇÃO DA EXPECTATIVA, não só de logística.
+
+Solução proposta:
+  Um assistente GPT ("Hermex Prazos") que, dado o estado (ou cidade)
+  de destino, devolve SEMPRE o mesmo prazo oficial, no mesmo formato,
+  com as mesmas ressalvas. O vendedor consulta o assistente antes de
+  informar o prazo ao cliente.
+
+Público: equipe comercial (vendas) da Hermex Log.
+Fora do escopo: rastrear pedidos, calcular frete (valor), tratar
+reclamações, prometer datas exatas.
+
+
+---------------------------------------------------------------------
+ (b) CRITÉRIOS DE RESPOSTA
+---------------------------------------------------------------------
+
+1. ESTADO DE DESTINO
+   - Entrada aceita: sigla (BA), nome do estado (Bahia) ou cidade
+     (Salvador). O assistente converte tudo para a sigla da UF.
+   - O estado define a REGIÃO (classificação IBGE), e a região
+     define o prazo.
+
+2. TIPO DE FRETE
+   - Padrão: é o único com prazos oficiais definidos (tabela abaixo).
+   - Expresso: disponibilidade e prazo NÃO definidos pela empresa
+     (ver Dúvidas na Matriz CSD). O assistente não promete prazo
+     expresso e orienta a consultar a equipe de logística.
+   - Se o usuário não informar o tipo, considera-se Padrão.
+
+3. PRAZO EM DIAS ÚTEIS
+   - Sempre em dias úteis (segunda a sexta, sem feriados).
+   - Contado a partir da confirmação do pagamento do pedido.
+   - Sempre apresentado como faixa (mínimo-máximo), nunca como
+     data exata.
+
+   TABELA OFICIAL DE PRAZOS - FRETE PADRÃO (dias úteis)
+   +---------------+------------------------------+-----+-----+
+   | Região        | Estados                      | Mín | Máx |
+   +---------------+------------------------------+-----+-----+
+   | Sudeste - SP  | SP                           |  2  |  4  |
+   | Sudeste       | RJ, MG, ES                   |  2  |  5  |
+   | Sul           | PR, SC, RS                   |  3  |  6  |
+   | Centro-Oeste  | GO, MT, MS, DF               |  4  |  7  |
+   | Nordeste      | BA, SE, AL, PE, PB, RN, CE,  |  6  | 12  |
+   |               | PI, MA                       |     |     |
+   | Norte         | AM, PA, AC, RO, RR, AP, TO   |  8  | 16  |
+   +---------------+------------------------------+-----+-----+
+
+   Fonte: SLA de entrega por região da Hermex Log (o mesmo que será
+   documentado no Notion na Etapa 4), com SP como exceção de 2-4 dias
+   úteis (certeza informada pela empresa). Usar a MESMA tabela no GPT
+   e no Notion evita duas "verdades" diferentes.
+
+
+---------------------------------------------------------------------
+ (c) FORMATO DE SAÍDA ESPERADO
+---------------------------------------------------------------------
+
+Toda resposta sobre prazo segue esta estrutura:
+
+  1) Linha de identificação:
+     "Destino identificado: <Estado> (<UF>) - Região <Região>"
+
+  2) Tabela:
+     | Estado | Região | Tipo de frete | Prazo mínimo | Prazo máximo | Observações |
+
+  3) Aviso fixo:
+     "Prazos estimados em dias úteis, contados a partir da confirmação
+      do pagamento. Não constituem garantia de data de entrega."
+
+Exemplo:
+  Destino identificado: Bahia (BA) - Região Nordeste
+
+  | Estado | Região   | Tipo de frete | Prazo mínimo | Prazo máximo | Observações |
+  |--------|----------|---------------|--------------|--------------|-------------|
+  | BA     | Nordeste | Padrão        | 6 dias úteis | 12 dias úteis| Região com maior variação de prazo; alinhe a expectativa do cliente. |
+
+
+=====================================================================
+ MATRIZ CSD - CERTEZAS, SUPOSIÇÕES E DÚVIDAS
+=====================================================================
+
+CERTEZAS (o que sabemos e está confirmado)
+---------------------------------------------------------------------
+C1. SP tem prazo de 2 a 4 dias úteis (informado pela empresa e
+    confirmado pelos dados: entregas em SP levaram de 0 a 3 dias úteis).
+C2. Os prazos são comunicados em dias úteis.
+C3. A região é definida pelo estado de destino (divisão do IBGE).
+C4. Existe um SLA por região: Sudeste 2-5, Sul 3-6, Centro-Oeste 4-7,
+    Nordeste 6-12, Norte 8-16 dias úteis.
+C5. Norte e Nordeste concentram as piores notas de NPS e as
+    reclamações de atraso.
+
+  -> Tratamento no GPT: entram na TABELA OFICIAL. O assistente usa
+     esses dados com segurança, sem ressalvas extras além do aviso
+     padrão de que prazos são estimativas.
+
+SUPOSIÇÕES (o que acreditamos, mas não está 100% validado)
+---------------------------------------------------------------------
+S1. Regiões Norte e Nordeste podem ter prazo de 8 a 15 dias úteis
+    (hipótese inicial do enunciado). Refinada com o SLA oficial
+    (NE 6-12, N 8-16) e compatível com os dados (NE 6-9, N 8-10).
+S2. Estados sem nenhuma entrega na base (ES, MT, MS, DF, SE, AL, PB,
+    RN, PI, AC, RO, RR, AP, TO) seguem o prazo da sua região.
+S3. Capitais e cidades do interior têm o mesmo prazo dentro do estado.
+S4. Endereços de "difícil acesso" (citados na planilha de handoff)
+    podem ficar perto do prazo máximo.
+
+  -> Tratamento no GPT: o assistente responde com o prazo da região,
+     mas registra a suposição na coluna Observações (ex.: "Prazo
+     estimado pela regra da região; sem histórico específico para
+     este estado"). Nunca apresenta suposição como garantia.
+
+DÚVIDAS (o que não sabemos e precisa ser respondido pela empresa)
+---------------------------------------------------------------------
+D1. A empresa oferece frete expresso para todas as regiões? Qual o
+    prazo? (Na base, "entrega expressa" só aparece em pedidos de SP.)
+D2. O prazo conta a partir do pedido, da aprovação do pagamento ou
+    do envio? (Adotado: confirmação do pagamento.)
+D3. Feriados estaduais e municipais entram na contagem?
+D4. Existe prazo diferenciado para zona rural ou áreas remotas
+    (ex.: interior do Amazonas, acesso fluvial)?
+D5. Qual o prazo para pedidos com pagamento "Pendente"?
+
+  -> Tratamento no GPT: o assistente NÃO inventa resposta. Diz que
+     não possui essa informação e orienta a consultar a equipe de
+     logística/pós-vendas. As dúvidas viram pendências para a
+     liderança responder e, quando respondidas, passam a ser
+     certezas e entram nas instruções.
+
+Ciclo de vida da Matriz CSD:
+  Dúvida --(empresa responde)--> Certeza --> entra na tabela do GPT
+  Suposição --(dados confirmam)--> Certeza
+  Suposição --(dados contradizem)--> corrigir a tabela
+
+
+---------------------------------------------------------------------
+ DECISÕES DE PROJETO REGISTRADAS
+---------------------------------------------------------------------
+1. Prazos únicos: GPT (Etapa 1) e Notion (Etapa 4) usam a mesma tabela.
+2. Frete padrão é o default; frete expresso é tratado como Dúvida (D1).
+3. O assistente aceita cidade e converte para UF (quebra-gelo
+   "Qual o prazo para entrega em Salvador?").
+4. Os prazos do dashboard (Etapa 4) usam DATE_DIFF, que conta dias
+   CORRIDOS. O GPT comunica dias ÚTEIS. Ao comparar, lembrar dessa
+   diferença.

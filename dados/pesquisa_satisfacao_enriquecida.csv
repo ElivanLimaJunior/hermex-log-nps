@@ -1,0 +1,61 @@
+id_pedido,estado,estado_geo,regiao,data_pedido,data_envio,data_recebimento,nota_nps,grupo_nps,promotor,detrator,detrator_regra_n8n,dias_ate_envio,dias_ate_entrega,dias_uteis_ate_entrega,sla_min_dias_uteis,sla_max_dias_uteis,dentro_do_sla,categoria_feedback,comentario
+P001,SP,BR-SP,Sudeste,2025-04-01,2025-04-03,2025-04-06,9,Promotor,1,0,0,2,5,3,2,4,Sim,,Entrega rápida e produto em perfeito estado
+P002,RJ,BR-RJ,Sudeste,2025-04-01,2025-04-04,2025-04-09,4,Detrator,0,1,1,3,8,6,2,5,Não,Atraso,Produto chegou com a caixa amassada e fora do prazo
+P003,MG,BR-MG,Sudeste,2025-04-02,2025-04-04,2025-04-08,7,Neutro,0,0,0,2,6,4,2,5,Sim,,Prazo ok mas a embalagem poderia ser melhor
+P004,BA,BR-BA,Nordeste,2025-04-02,2025-04-06,2025-04-14,2,Detrator,0,1,1,4,12,8,6,12,Sim,Atraso,Atraso absurdo de mais de 10 dias e ninguém informou nada
+P005,SP,BR-SP,Sudeste,2025-04-03,2025-04-05,2025-04-07,10,Promotor,1,0,0,2,4,2,2,4,Sim,,Excelente serviço como sempre
+P006,RS,BR-RS,Sul,2025-04-03,2025-04-06,2025-04-12,3,Detrator,0,1,1,3,9,6,3,6,Sim,Defeito,Produto veio com defeito e a entrega atrasou
+P007,PE,BR-PE,Nordeste,2025-04-04,2025-04-08,2025-04-16,1,Detrator,0,1,1,4,12,8,6,12,Sim,Defeito,Pior experiência de compra que já tive. Produto errado e sem resposta do suporte
+P008,SP,BR-SP,Sudeste,2025-04-04,2025-04-06,2025-04-08,8,Neutro,0,0,0,2,4,2,2,4,Sim,,Tudo certo dentro do esperado
+P009,CE,BR-CE,Nordeste,2025-04-05,2025-04-09,2025-04-17,3,Detrator,0,1,1,4,12,9,6,12,Sim,Atraso,Demora excessiva para o Nordeste. Inaceitável
+P010,PR,BR-PR,Sul,2025-04-05,2025-04-07,2025-04-10,9,Promotor,1,0,0,2,5,4,3,6,Sim,,Muito satisfeito com a rapidez
+P011,SC,BR-SC,Sul,2025-04-06,2025-04-08,2025-04-11,8,Neutro,0,0,0,2,5,5,3,6,Sim,,Bom serviço e prazo cumprido
+P012,AM,BR-AM,Norte,2025-04-06,2025-04-11,2025-04-22,2,Detrator,0,1,1,5,16,10,8,16,Sim,Atraso,Mais de duas semanas para chegar. Região Norte é sempre esquecida
+P013,RJ,BR-RJ,Sudeste,2025-04-07,2025-04-09,2025-04-13,5,Detrator,0,1,1,2,6,4,2,5,Sim,Outro,Prazo razoável mas o produto veio sem nota fiscal
+P014,GO,BR-GO,Centro-Oeste,2025-04-07,2025-04-10,2025-04-14,6,Detrator,0,1,0,3,7,5,4,7,Sim,,Entrega dentro do prazo mas sem comunicação de rastreio
+P015,SP,BR-SP,Sudeste,2025-04-08,2025-04-10,2025-04-12,10,Promotor,1,0,0,2,4,3,2,4,Sim,,Perfeito. Recomendo a todos
+P016,BA,BR-BA,Nordeste,2025-04-08,2025-04-12,2025-04-20,3,Detrator,0,1,1,4,12,7,6,12,Sim,Atraso,Atraso de quase duas semanas para a Bahia
+P017,MG,BR-MG,Sudeste,2025-04-09,2025-04-11,2025-04-14,7,Neutro,0,0,0,2,5,3,2,5,Sim,,Nada a reclamar. Serviço padrão
+P018,PA,BR-PA,Norte,2025-04-09,2025-04-14,2025-04-24,1,Detrator,0,1,1,5,15,9,8,16,Sim,Defeito,Produto chegou quebrado depois de 15 dias. Quero reembolso
+P019,SP,BR-SP,Sudeste,2025-04-10,2025-04-12,2025-04-14,9,Promotor,1,0,0,2,4,2,2,4,Sim,,Entrega antes do prazo. Parabéns
+P020,RS,BR-RS,Sul,2025-04-10,2025-04-13,2025-04-18,5,Detrator,0,1,1,3,8,5,3,6,Sim,Atraso,Demorou mais do que o prometido mas chegou inteiro
+P021,PE,BR-PE,Nordeste,2025-04-11,2025-04-15,2025-04-23,2,Detrator,0,1,1,4,12,6,6,12,Sim,Defeito,Atraso enorme e produto com avaria. Péssimo
+P022,RJ,BR-RJ,Sudeste,2025-04-11,2025-04-13,2025-04-16,8,Neutro,0,0,0,2,5,3,2,5,Sim,,Bom prazo para o Rio de Janeiro
+P023,SP,BR-SP,Sudeste,2025-04-12,2025-04-14,2025-04-16,10,Promotor,1,0,0,2,4,3,2,4,Sim,,Sempre entregam rápido em São Paulo
+P024,MA,BR-MA,Nordeste,2025-04-12,2025-04-17,2025-04-26,2,Detrator,0,1,1,5,14,8,6,12,Sim,Atraso,Quase um mês para receber. Absurdo
+P025,SC,BR-SC,Sul,2025-04-13,2025-04-15,2025-04-18,9,Promotor,1,0,0,2,5,4,3,6,Sim,,Ótima experiência de entrega
+P026,MG,BR-MG,Sudeste,2025-04-13,2025-04-15,2025-04-19,6,Detrator,0,1,0,2,6,4,2,5,Sim,,Prazo ok mas faltou comunicação sobre o status
+P027,CE,BR-CE,Nordeste,2025-04-14,2025-04-18,2025-04-26,3,Detrator,0,1,1,4,12,7,6,12,Sim,Atraso,Nordeste sempre com atraso. Precisam melhorar a logística regional
+P028,SP,BR-SP,Sudeste,2025-04-14,2025-04-16,2025-04-18,9,Promotor,1,0,0,2,4,3,2,4,Sim,,Rápido e sem problemas
+P029,PR,BR-PR,Sul,2025-04-15,2025-04-17,2025-04-20,8,Neutro,0,0,0,2,5,2,3,6,Sim,,Entrega no prazo e bem embalado
+P030,BA,BR-BA,Nordeste,2025-04-15,2025-04-19,2025-04-27,4,Detrator,0,1,1,4,12,6,6,12,Sim,Atraso,Atraso significativo. Produto ok mas o prazo não
+P031,RJ,BR-RJ,Sudeste,2025-04-16,2025-04-18,2025-04-22,6,Detrator,0,1,0,2,6,2,2,5,Sim,,Poderia ser mais rápido para o Rio
+P032,AM,BR-AM,Norte,2025-04-16,2025-04-22,2025-05-02,1,Detrator,0,1,1,6,16,9,8,16,Sim,Defeito,Entrega demorou demais e veio com defeito. Quero devolução
+P033,SP,BR-SP,Sudeste,2025-04-17,2025-04-19,2025-04-21,10,Promotor,1,0,0,2,4,0,2,4,Sim,,Impecável como sempre
+P034,GO,BR-GO,Centro-Oeste,2025-04-17,2025-04-20,2025-04-24,7,Neutro,0,0,0,3,7,3,4,7,Sim,,Dentro do esperado para o Centro-Oeste
+P035,RS,BR-RS,Sul,2025-04-18,2025-04-21,2025-04-26,5,Detrator,0,1,1,3,8,4,3,6,Sim,Atraso,Demorou um pouco mais que o previsto
+P036,PE,BR-PE,Nordeste,2025-04-18,2025-04-22,2025-04-30,3,Detrator,0,1,1,4,12,7,6,12,Sim,Atraso,Atraso de 12 dias. Inaceitável para uma empresa de logística
+P037,MG,BR-MG,Sudeste,2025-04-19,2025-04-21,2025-04-25,7,Neutro,0,0,0,2,6,4,2,5,Sim,,Serviço satisfatório sem grandes problemas
+P038,SP,BR-SP,Sudeste,2025-04-19,2025-04-21,2025-04-23,9,Promotor,1,0,0,2,4,2,2,4,Sim,,Entrega expressa funcionou perfeitamente
+P039,PA,BR-PA,Norte,2025-04-20,2025-04-25,2025-05-04,2,Detrator,0,1,1,5,14,8,8,16,Sim,Outro,Norte do Brasil é terra de ninguém para essa empresa
+P040,SC,BR-SC,Sul,2025-04-20,2025-04-22,2025-04-25,8,Neutro,0,0,0,2,5,4,3,6,Sim,,Prazo cumprido e boa embalagem
+P041,CE,BR-CE,Nordeste,2025-04-21,2025-04-25,2025-05-02,4,Detrator,0,1,1,4,11,8,6,12,Sim,Atraso,Atraso e falta de informação sobre rastreamento
+P042,RJ,BR-RJ,Sudeste,2025-04-21,2025-04-23,2025-04-27,7,Neutro,0,0,0,2,6,4,2,5,Sim,,Prazo aceitável para o estado do Rio
+P043,SP,BR-SP,Sudeste,2025-04-22,2025-04-24,2025-04-26,10,Promotor,1,0,0,2,4,3,2,4,Sim,,Melhor logística que já usei
+P044,BA,BR-BA,Nordeste,2025-04-22,2025-04-26,2025-05-03,3,Detrator,0,1,1,4,11,7,6,12,Sim,Atraso,Mais uma vez atraso para o Nordeste. Já é recorrente
+P045,PR,BR-PR,Sul,2025-04-23,2025-04-25,2025-04-28,8,Neutro,0,0,0,2,5,3,3,6,Sim,,Sem reclamações. Entrega pontual
+P046,MA,BR-MA,Nordeste,2025-04-23,2025-04-28,2025-05-07,1,Detrator,0,1,1,5,14,9,6,12,Sim,Outro,Produto extraviado. Tive que abrir reclamação formal
+P047,MG,BR-MG,Sudeste,2025-04-24,2025-04-26,2025-04-30,6,Detrator,0,1,0,2,6,4,2,5,Sim,,Prazo ok mas a caixa veio danificada
+P048,SP,BR-SP,Sudeste,2025-04-24,2025-04-26,2025-04-28,9,Promotor,1,0,0,2,4,2,2,4,Sim,,Sempre confiável para São Paulo
+P049,RS,BR-RS,Sul,2025-04-25,2025-04-28,2025-05-02,5,Detrator,0,1,1,3,7,4,3,6,Sim,Atraso,Poderia melhorar o prazo para o Sul
+P050,AM,BR-AM,Norte,2025-04-25,2025-04-30,2025-05-10,2,Detrator,0,1,1,5,15,9,8,16,Sim,Defeito,Demora absurda para Manaus. Produto com avaria
+P051,SP,BR-SP,Sudeste,2025-04-26,2025-04-28,2025-04-30,10,Promotor,1,0,0,2,4,3,2,4,Sim,,Entrega perfeita e rápida
+P052,PE,BR-PE,Nordeste,2025-04-26,2025-04-30,2025-05-07,4,Detrator,0,1,1,4,11,7,6,12,Sim,Atraso,Atraso e sem atualização de rastreio
+P053,GO,BR-GO,Centro-Oeste,2025-04-27,2025-04-30,2025-05-04,7,Neutro,0,0,0,3,7,4,4,7,Sim,,Dentro do prazo para Goiás
+P054,RJ,BR-RJ,Sudeste,2025-04-27,2025-04-29,2025-05-02,8,Neutro,0,0,0,2,5,4,2,5,Sim,,Bom serviço no geral
+P055,CE,BR-CE,Nordeste,2025-04-28,2025-05-02,2025-05-10,3,Detrator,0,1,1,4,12,8,6,12,Sim,Atraso,Nordeste continua com problemas sérios de prazo
+P056,SC,BR-SC,Sul,2025-04-28,2025-04-30,2025-05-03,9,Promotor,1,0,0,2,5,3,3,6,Sim,,Excelente para Santa Catarina
+P057,BA,BR-BA,Nordeste,2025-04-29,2025-05-03,2025-05-11,4,Detrator,0,1,1,4,12,7,6,12,Sim,Atraso,Atraso de 12 dias. Produto ok mas o prazo não
+P058,SP,BR-SP,Sudeste,2025-04-29,2025-05-01,2025-05-03,9,Promotor,1,0,0,2,4,2,2,4,Sim,,Rápido e confiável
+P059,PA,BR-PA,Norte,2025-04-30,2025-05-05,2025-05-15,2,Detrator,0,1,1,5,15,10,8,16,Sim,Atraso,Região Norte precisa de atenção urgente. 15 dias é demais
+P060,PR,BR-PR,Sul,2025-04-30,2025-05-02,2025-05-05,8,Neutro,0,0,0,2,5,2,3,6,Sim,,Prazo cumprido sem problemas

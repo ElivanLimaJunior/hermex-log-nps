@@ -1,0 +1,59 @@
+=====================================================================
+ ETAPA 3 - PASSO 1: PLANILHA pesquisa_satisfacao + GOOGLE FORMS
+=====================================================================
+
+A) IMPORTAR O DATASET
+  1. Abra a planilha pesquisa_satisfacao (pasta "Hermex Log — Projeto NPS").
+  2. Confira a localidade (Arquivo > Configurações > Localidade).
+     Recomendo "Estados Unidos" para o ponto decimal e as datas
+     AAAA-MM-DD serem lidas corretamente.
+  3. Arquivo > Importar > Fazer upload > dados/pesquisa_satisfacao.csv
+     -> "Substituir a página atual" | Separador: Vírgula
+  4. Renomeie a aba para: pesquisa_satisfacao
+     (o workflow do n8n procura a aba por ESTE nome)
+
+  !! IMPORTANTE - E-MAILS DE TESTE !!
+  Os e-mails do dataset são fictícios, mas o domínio "email.com"
+  EXISTE (é um provedor real). Se o n8n enviar para
+  ana.souza@email.com, a mensagem pode chegar a uma pessoa real.
+  Antes de testar, troque na aba pesquisa_satisfacao o email_cliente
+  dos pedidos que você vai usar nos testes (ex.: P005 e P004) por um
+  endereço do TempEmail.org ou pelo seu próprio e-mail.
+
+B) CRIAR O GOOGLE FORMS
+  1. No Drive, dentro da pasta do projeto: Novo > Formulários Google.
+  2. Título: "Pesquisa de Satisfação — Hermex Log"
+     Descrição: "Sua opinião ajuda a melhorar nossas entregas. Leva
+     menos de 1 minuto."
+  3. Perguntas (os títulos precisam ser EXATAMENTE estes, porque
+     viram os nomes das colunas usados no n8n):
+
+     1) ID do Pedido
+        Tipo: Resposta curta | Obrigatória
+        Validação (3 pontinhos > Validação da resposta):
+          Expressão regular > Corresponde > ^P\d{3}$
+          Texto de erro: "Informe o ID no formato P001"
+
+     2) Nota NPS (0-10)
+        Tipo: Escala linear | de 0 a 10 | Obrigatória
+        Rótulo 0: "Nada provável"  | Rótulo 10: "Extremamente provável"
+        Texto de ajuda: "De 0 a 10, o quanto você recomendaria a
+        Hermex Log a um amigo?"
+
+     3) Comentário
+        Tipo: Parágrafo | Opcional
+        Texto de ajuda: "Conte o motivo da sua nota."
+
+  4. Aba "Respostas" > ícone do Planilhas ("Vincular ao Planilhas")
+     > "Selecionar planilha existente" > pesquisa_satisfacao.
+     O Forms cria uma NOVA ABA chamada algo como
+     "Respostas ao formulário 1", com as colunas:
+       Carimbo de data/hora | ID do Pedido | Nota NPS (0-10) | Comentário
+  5. Confira o nome exato da aba criada. Ele vai no gatilho do n8n.
+
+C) POR QUE O FORMS SÓ TEM 3 CAMPOS?
+  Nome e e-mail do cliente já existem na base (aba pesquisa_satisfacao).
+  Pedir de novo aumenta o atrito, gera erro de digitação e duplica
+  dado pessoal. O workflow BUSCA nome e e-mail pelo ID do Pedido
+  (nó "Buscar dados do cliente"). É o mesmo princípio do handoff:
+  a informação deve existir em UM lugar só.

@@ -1,0 +1,5 @@
+.env
+*.zip
+
+# Material de estudo pessoal (não vai para o GitHub)
+estudos/

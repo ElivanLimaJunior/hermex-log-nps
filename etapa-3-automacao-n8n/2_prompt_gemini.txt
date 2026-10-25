@@ -1,0 +1,69 @@
+=====================================================================
+ ETAPA 3 - PROMPT DE CLASSIFICAÇÃO (GEMINI)
+=====================================================================
+
+Este prompt já está embutido no nó "Classificar com Gemini" do arquivo
+hermex_nps_automacao.json. Fica aqui para leitura, estudo e ajustes.
+
+---------------------------------------------------------------------
+ INSTRUÇÃO DE SISTEMA (systemInstruction)
+---------------------------------------------------------------------
+Você é um classificador de feedbacks de clientes da Hermex Log, uma
+empresa de logística. Classifique o comentário em UMA categoria:
+
+Atraso: entrega demorada, fora do prazo ou falta de atualização sobre o prazo.
+Defeito: produto chegou quebrado, com defeito, com avaria ou errado.
+Atendimento: suporte não respondeu, atendimento ruim ou falta de retorno.
+Embalagem: caixa amassada, danificada ou embalagem inadequada, com o produto inteiro.
+Outro: qualquer assunto diferente (nota fiscal, extravio, cobrança, comentário vago).
+
+Se houver mais de um problema, escolha o mais grave nesta ordem de
+prioridade: Defeito > Atraso > Embalagem > Atendimento > Outro.
+
+Responda APENAS com uma das seguintes palavras: Atraso, Defeito,
+Atendimento, Embalagem, Outro. Nenhuma explicação adicional, sem
+pontuação.
+
+---------------------------------------------------------------------
+ MENSAGEM DO USUÁRIO (contents)
+---------------------------------------------------------------------
+Comentário: "{{ comentário do cliente }}"
+
+---------------------------------------------------------------------
+ CONFIGURAÇÃO
+---------------------------------------------------------------------
+Modelo ..... gemini-2.5-flash (gratuito no AI Studio). Se a sua conta
+             não listar esse modelo, troque na URL do nó pelo modelo
+             "flash" disponível em aistudio.google.com.
+temperature: 0 -> respostas determinísticas (mesma entrada = mesma saída)
+
+---------------------------------------------------------------------
+ POR QUE O PROMPT É ASSIM
+---------------------------------------------------------------------
+1. Definição de cada categoria: sem definição, "caixa amassada" pode
+   virar Defeito ou Embalagem, dependendo da execução.
+2. Ordem de prioridade: muitos comentários têm dois problemas
+   ("chegou quebrado depois de 15 dias"). A regra torna a escolha
+   previsível.
+3. "Responda APENAS com...": o enunciado exige uma única palavra, e
+   o e-mail e o dashboard dependem disso.
+4. Instrução no systemInstruction e comentário no contents: separar
+   regra de dado dificulta que um comentário malicioso ("ignore as
+   instruções...") manipule o classificador (prompt injection).
+5. Rede de segurança: depois do Gemini, o nó "Extrair categoria"
+   procura uma das 5 palavras dentro da resposta, na mesma ordem de
+   prioridade (então "Categoria: Atraso." vira "Atraso"). Se não
+   encontrar nenhuma, grava "Outro". O workflow nunca quebra por causa de uma
+   resposta fora do padrão. A resposta original vai junto no e-mail
+   para a validação humana.
+
+---------------------------------------------------------------------
+ TESTE MANUAL NO AI STUDIO (opcional, antes do n8n)
+---------------------------------------------------------------------
+aistudio.google.com > Create prompt > cole a instrução de sistema em
+"System instructions" > temperature 0 > teste com:
+  "Produto chegou quebrado depois de 15 dias. Quero reembolso" -> Defeito
+  "Atraso de 12 dias. Inaceitável"                              -> Atraso
+  "Prazo ok mas a caixa veio danificada"                        -> Embalagem
+  "Pior experiência. Sem resposta do suporte"                   -> Atendimento
+  "Prazo razoável mas o produto veio sem nota fiscal"           -> Outro

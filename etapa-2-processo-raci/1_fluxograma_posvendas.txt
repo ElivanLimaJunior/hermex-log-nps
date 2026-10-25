@@ -1,0 +1,93 @@
+=====================================================================
+ HERMEX LOG - FLUXOGRAMA DO PROCESSO DE PÓS-VENDAS
+ Especificação para desenhar no Miro (board "Hermex Log — Processos")
+=====================================================================
+
+LEGENDA DE FORMAS (simbologia)
+  ( oval )          = Início / Fim (blocos principais)
+  [ ret. arredond. ]= Atividade
+  < losango >       = Decisão (Sim / Não)
+  BORDA VERMELHA    = Atividade candidata à automação
+
+Dica Miro: barra lateral -> "Formas" (Shapes) -> use "Flowchart".
+Para a borda vermelha: selecione a forma -> cor da borda vermelha e
+espessura maior. Use "Conectores" (linhas com seta) entre as formas
+e escreva "Sim"/"Não" nas setas que saem dos losangos.
+
+---------------------------------------------------------------------
+ CAMINHO FELIZ (desenhe primeiro, de cima para baixo)
+---------------------------------------------------------------------
+
+ (I)  ( Início — Pedido Enviado )
+           |
+ (A1) [ Registrar envio na planilha de handoff ]          ** VERMELHA
+           |
+ (A2) [ Enviar e-mail de notificação ao pós-vendas ]      ** VERMELHA
+           |
+ (A3) [ Acompanhar rastreio do transporte ]
+           |
+ (D1) < Entrega confirmada? >
+           | Sim
+ (A5) [ Confirmar entrega (registrar data de recebimento) ] ** VERMELHA
+           |
+ (A6) [ Enviar pesquisa de satisfação ]                   ** VERMELHA
+           |
+ (A7) [ Registrar resposta NPS na planilha ]              ** VERMELHA
+           |
+ (D2) < Cliente insatisfeito? (nota < 6) >
+           | Não
+ (A11)[ Enviar e-mail de agradecimento ao cliente ]       ** VERMELHA
+           |
+ (F)  ( Fim — Ciclo Encerrado )
+
+---------------------------------------------------------------------
+ CAMINHOS ALTERNATIVOS (adicione depois)
+---------------------------------------------------------------------
+
+ LOOPING DE ENTREGA (saída "Não" de D1):
+   D1 --Não--> (D1b) < Prazo máximo do SLA excedido? >
+                 | Não --> (A4) [ Aguardar 1 dia útil e verificar
+                 |               novamente ]  ** VERMELHA --> volta para D1
+                 | Sim --> (A4b) [ Abrir ocorrência de atraso e
+                                   informar o cliente ] --> (A4) --> D1
+
+ CLIENTE INSATISFEITO (saída "Sim" de D2):
+   D2 --Sim--> (A8)  [ Classificar feedback com IA ]       ** VERMELHA
+           --> (A9)  [ Notificar equipe de pós-vendas ]    ** VERMELHA
+           --> (A10) [ Validar classificação e tratar a reclamação ]
+           --> (F)   ( Fim — Ciclo Encerrado )
+
+---------------------------------------------------------------------
+ ANOTAÇÕES DE AUTOMAÇÃO (post-its ao lado de cada forma vermelha)
+---------------------------------------------------------------------
+ Os 5 critérios: (1) Repetitividade  (2) Regras claras
+                 (3) Transferência de informações entre equipes
+                 (4) Criticidade     (5) Rastreabilidade
+
+ A1  Registrar envio no handoff ..... 1, 3, 5
+     Acontece em todo pedido; é a passagem de bastão de Vendas para
+     Pós-vendas; precisa ficar registrado para auditoria.
+ A2  Notificar o pós-vendas ......... 1, 2, 3, 4
+     Regra simples ("nova linha = avisar responsável"); se falhar, o
+     pós-vendas nem sabe que o pedido existe.
+ A4  Aguardar e verificar de novo ... 1, 2
+     Consulta periódica de status: tarefa mecânica e repetitiva.
+ A5  Confirmar entrega .............. 2, 5
+     O status vem do rastreio; registra a data usada no SLA.
+ A6  Enviar pesquisa ................ 1, 2
+     Regra: "entrega confirmada = enviar pesquisa". Sempre igual.
+ A7  Registrar resposta NPS ......... 1, 3, 5
+     O Forms grava sozinho na planilha; elimina digitação manual.
+ A8  Classificar com IA ............. 1, 2, 4
+     Muitos comentários; 5 categorias fixas; acelera o tratamento
+     dos detratores.
+ A9  Notificar o pós-vendas ......... 3, 4
+     Leva o detrator a quem trata; atraso aqui = cliente perdido.
+ A11 Agradecer cliente .............. 1, 2
+     Mensagem padrão, regra clara (nota >= 6).
+
+ NÃO automatizadas (de propósito):
+ A3  Acompanhar transporte: executado pelos Correios (sistema externo).
+ A4b Abrir ocorrência de atraso: exige negociação com a transportadora.
+ A10 Validar e tratar a reclamação: exige julgamento humano. A IA
+     classifica, mas uma PESSOA confere e resolve (validação humana).

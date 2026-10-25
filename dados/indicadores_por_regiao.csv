@@ -1,0 +1,6 @@
+regiao,respostas,promotores,neutros,detratores,nps_pct,nota_media,media_dias_ate_envio,media_dias_ate_entrega,dias_uteis_entrega_min,dias_uteis_entrega_max,sla_dias_uteis,pedidos_fora_do_sla
+Sudeste,24,12,7,5,29.2,8.04,2.04,4.92,0,6,2-5,1
+Sul,12,3,5,4,-8.3,7.08,2.33,6.0,2,6,3-6,0
+Centro-Oeste,3,0,2,1,-33.3,6.67,3.0,7.0,3,5,4-7,0
+Nordeste,15,0,0,15,-100.0,2.8,4.13,12.07,6,9,6-12,0
+Norte,6,0,0,6,-100.0,1.67,5.17,15.17,8,10,8-16,0

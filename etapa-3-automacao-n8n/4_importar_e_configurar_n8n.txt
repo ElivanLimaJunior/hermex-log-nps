@@ -1,0 +1,106 @@
+=====================================================================
+ ETAPA 3 - IMPORTAR E CONFIGURAR O WORKFLOW NO n8n
+ Workflow: "Hermex — NPS Automação" (arquivo hermex_nps_automacao.json)
+=====================================================================
+
+VISÃO GERAL DO FLUXO
+                                                  ┌─(true)─► Classificar com Gemini ─► Extrair categoria ─► Notificar pós-vendas
+ Nova resposta NPS ─► Buscar dados ─► Organizar ─►│
+ (Sheets Trigger)     do cliente      dados       └─(false)► Agradecer cliente
+                      (Sheets)        (Set)  Detrator? (nota < 6)
+
+ Nó                       O que faz
+ ----------------------   -------------------------------------------------
+ Nova resposta NPS        Verifica a cada minuto se entrou linha nova na aba
+                          de respostas do Forms
+ Buscar dados do cliente  Procura o id_pedido na aba pesquisa_satisfacao para
+                          pegar nome, e-mail e estado
+ Organizar dados          Junta tudo com nomes simples (cliente, nota_nps...)
+                          e converte a nota em NÚMERO
+ Detrator? (nota < 6)     Decide o caminho (regra do enunciado)
+ Classificar com Gemini   Chama a API do Gemini com o prompt de classificação
+ Extrair categoria        Lê a resposta do Gemini e garante 1 das 5 categorias
+ Notificar pós-vendas     Gmail para a equipe, com comentário para validação
+ Agradecer cliente        Gmail de agradecimento para o cliente
+
+---------------------------------------------------------------------
+ PASSO 1 - CHAVE DO GEMINI
+---------------------------------------------------------------------
+ 1. aistudio.google.com > "Get API key" > Create API key. Copie.
+ 2. NUNCA cole a chave no README, em prints ou no GitHub.
+
+---------------------------------------------------------------------
+ PASSO 2 - IMPORTAR
+---------------------------------------------------------------------
+ 1. n8n.cloud > projeto "Hermex Log" > Create Workflow.
+ 2. Menu "..." (canto superior direito) > Import from File >
+    escolha hermex_nps_automacao.json.
+ 3. Confira o nome: "Hermex — NPS Automação". Salve (Ctrl+S).
+
+---------------------------------------------------------------------
+ PASSO 3 - CREDENCIAIS (os nós com ⚠ pedem credencial)
+---------------------------------------------------------------------
+ a) Google Sheets (nós "Nova resposta NPS" e "Buscar dados do cliente")
+    Credential > Create new > "Google Sheets Trigger OAuth2" / "Google
+    Sheets OAuth2" > Sign in with Google > autorize.
+ b) Gemini (nó "Classificar com Gemini")
+    Credential for Header Auth > Create new
+      Name:  x-goog-api-key
+      Value: <sua chave do AI Studio>
+ c) Gmail (nós "Notificar pós-vendas" e "Agradecer cliente")
+    Credential > Create new > Gmail OAuth2 > Sign in with Google.
+
+---------------------------------------------------------------------
+ PASSO 4 - APONTAR PARA A SUA PLANILHA
+---------------------------------------------------------------------
+ Nos nós "Nova resposta NPS" e "Buscar dados do cliente":
+   Document: troque o texto COLE_AQUI_A_URL... pela sua planilha
+             (ou mude para "From list" e escolha pesquisa_satisfacao)
+   Sheet:    "Nova resposta NPS"      -> aba de respostas do Forms
+                                         (ex.: "Respostas ao formulário 1")
+             "Buscar dados do cliente" -> aba "pesquisa_satisfacao"
+ No nó "Notificar pós-vendas":
+   To: troque EMAIL_DA_EQUIPE_POSVENDAS@exemplo.com pelo seu TempEmail.
+
+---------------------------------------------------------------------
+ PASSO 5 - TESTAR O GATILHO E FIXAR (PIN DATA)
+---------------------------------------------------------------------
+ 1. Abra o nó "Nova resposta NPS" > "Fetch Test Event".
+ 2. Ele espera uma linha NOVA. Responda o Forms (ex.: P004, nota 2,
+    "Atraso absurdo e ninguém informou nada").
+ 3. Quando aparecer o dado no painel OUTPUT, clique no ícone de
+    alfinete (Pin data). Agora os próximos nós podem ser testados
+    sem precisar responder o Forms de novo.
+ 4. Clique em "Test workflow" e confira o OUTPUT de cada nó.
+
+---------------------------------------------------------------------
+ PASSO 6 - ATIVAR
+---------------------------------------------------------------------
+ Depois dos testes (arquivo 5_testes_workflow.txt): DESFIXE o pin data
+ (o pin só vale para testes) e ligue o botão "Active"/"Publish".
+ A partir daí, cada resposta do Forms dispara o fluxo em até ~1 minuto.
+
+---------------------------------------------------------------------
+ TROUBLESHOOTING
+---------------------------------------------------------------------
+ Gatilho esperando para sempre
+   -> Ele só dispara com linha NOVA. Responda o Forms de novo.
+ "Buscar dados do cliente" sem saída e o fluxo para
+   -> O ID digitado não existe na aba pesquisa_satisfacao, ou o nome
+      da aba/coluna está diferente (precisa ser id_pedido).
+ Nota 10 caiu no caminho de detrator (ou vice-versa)
+   -> A nota chegou como texto. Confira no OUTPUT de "Organizar dados"
+      se nota_nps é número (ícone #).
+ Gemini: erro 400/404
+   -> Modelo indisponível: troque "gemini-2.5-flash" na URL por um
+      modelo listado no AI Studio.
+ Gemini: erro 403
+   -> Chave errada ou o header não se chama exatamente x-goog-api-key.
+ Gemini: erro 429
+   -> Limite do plano gratuito. Espere 1 minuto e tente de novo.
+ Gemini devolve uma frase em vez de uma palavra
+   -> O nó "Extrair categoria" já trata isso. Se for frequente,
+      reforce o prompt (veja 2_prompt_gemini.txt).
+ E-mail sem os dados (aparece vazio)
+   -> Confira o OUTPUT do nó anterior: o nome do campo precisa ser
+      idêntico ao usado em {{$json['campo']}}.

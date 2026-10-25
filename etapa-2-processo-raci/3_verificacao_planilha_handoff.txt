@@ -1,0 +1,60 @@
+=====================================================================
+ HERMEX LOG - VERIFICAÇÃO DA PLANILHA DE HANDOFF
+ (estrutura adequada para servir de gatilho no n8n?)
+=====================================================================
+
+COMO IMPORTAR NO GOOGLE SHEETS
+  1. ANTES de importar: Arquivo > Configurações > Localidade.
+     Se estiver "Brasil", o Sheets usa VÍRGULA como separador decimal
+     e pode ler "320.00" como texto ou como 32000. Duas opções:
+       a) Mude a localidade para "Estados Unidos" antes de importar
+          (mais seguro); ou
+       b) Importe com "Converter texto em números, datas e fórmulas"
+          DESMARCADO e confira a coluna valor_pedido depois.
+  2. Arquivo > Importar > Fazer upload > dados/handoff_vendas_posvenda.csv
+     -> "Substituir a página atual" (na primeira aba)
+     -> Separador: Vírgula
+  3. Renomeie a aba para "handoff".
+  O mesmo cuidado vale para pesquisa_satisfacao (datas e notas).
+
+RESULTADO DA VERIFICAÇÃO (feita no CSV)
+  Linhas (pedidos) ............... 30 (P001 a P030)
+  Uma linha = um pedido .......... OK (nenhum id_pedido duplicado)
+  Campos vazios .................. nenhum
+  id_pedido ...................... OK, todos preenchidos e únicos
+  cliente ........................ OK, todos preenchidos
+  email_cliente .................. OK, formato válido em todos
+  estado ......................... OK, todas as UFs válidas (2 letras)
+  valor_pedido ................... OK, numérico com 2 casas (total R$ 11.035,50)
+  data_pedido .................... OK, formato AAAA-MM-DD
+  status_pagamento ............... 30 "Aprovado"
+  responsavel_posvenda ........... Maria (15) e João (15)
+  Consistência com a pesquisa .... OK, cliente/e-mail/estado/data
+                                   iguais nos 30 pedidos em comum
+
+  CONCLUSÃO: a estrutura É ADEQUADA para gatilho no n8n.
+  - Cabeçalho na linha 1, sem células mescladas, sem linhas em branco.
+  - Cada nova linha = um novo pedido -> o gatilho "Row Added" do
+    Google Sheets dispara uma execução por pedido.
+  - Os campos essenciais (id_pedido, cliente, email_cliente) estão
+    100% preenchidos.
+
+PONTOS DE ATENÇÃO
+  1. A pesquisa tem 60 pedidos e o handoff só 30 (P031-P060 não
+     passaram pelo handoff). Isso ilustra a própria falha que o
+     projeto quer resolver: pedidos sem registro de passagem para o
+     pós-vendas.
+  2. O responsavel_posvenda tem só o NOME ("Maria"). Para o n8n
+     notificar a pessoa certa, falta o E-MAIL do responsável.
+  3. Não há colunas de acompanhamento da entrega.
+
+MELHORIAS RECOMENDADAS (colunas novas para a automação completa)
+  data_envio            -> usada no SLA e no "Início — Pedido Enviado"
+  codigo_rastreio       -> consulta automática ao transportador
+  status_entrega        -> Em trânsito / Entregue / Ocorrência
+  data_recebimento      -> dispara o envio da pesquisa
+  email_responsavel     -> destino da notificação do n8n
+  pesquisa_enviada      -> Sim/Não, evita enviar duas vezes
+  Validação de dados (Dados > Validação de dados): lista suspensa para
+  status_pagamento, status_entrega e responsavel_posvenda, para
+  evitar erros de digitação que quebram as regras do n8n.

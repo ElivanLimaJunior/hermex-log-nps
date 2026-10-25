@@ -1,0 +1,357 @@
+{
+  "name": "Hermex — NPS Automação",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "COLE_AQUI_A_URL_DA_PLANILHA_pesquisa_satisfacao"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Respostas ao formulário 1"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "id": "hermex-nova-resposta-nps",
+      "name": "Nova resposta NPS",
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "COLE_AQUI_A_URL_DA_PLANILHA_pesquisa_satisfacao"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "pesquisa_satisfacao"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "id_pedido",
+              "lookupValue": "={{ $('Nova resposta NPS').item.json['ID do Pedido'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "hermex-buscar-dados-do-cliente",
+      "name": "Buscar dados do cliente",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c01",
+              "name": "id_pedido",
+              "value": "={{ $('Nova resposta NPS').item.json['ID do Pedido'] }}",
+              "type": "string"
+            },
+            {
+              "id": "c02",
+              "name": "cliente",
+              "value": "={{ $json.cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "c03",
+              "name": "email_cliente",
+              "value": "={{ $json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "c04",
+              "name": "estado",
+              "value": "={{ $json.estado }}",
+              "type": "string"
+            },
+            {
+              "id": "c05",
+              "name": "nota_nps",
+              "value": "={{ Number($('Nova resposta NPS').item.json['Nota NPS (0-10)']) }}",
+              "type": "number"
+            },
+            {
+              "id": "c06",
+              "name": "comentario",
+              "value": "={{ $('Nova resposta NPS').item.json['Comentário'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "hermex-organizar-dados",
+      "name": "Organizar dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-detrator",
+              "leftValue": "={{ $json.nota_nps }}",
+              "rightValue": 6,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "hermex-detrator-nota-lt-6",
+      "name": "Detrator? (nota < 6)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ systemInstruction: { parts: [ { text: \"Você é um classificador de feedbacks de clientes da Hermex Log, uma empresa de logística. Classifique o comentário em UMA categoria:\\nAtraso: entrega demorada, fora do prazo ou falta de atualização sobre o prazo.\\nDefeito: produto chegou quebrado, com defeito, com avaria ou errado.\\nAtendimento: suporte não respondeu, atendimento ruim ou falta de retorno.\\nEmbalagem: caixa amassada, danificada ou embalagem inadequada, com o produto inteiro.\\nOutro: qualquer assunto diferente (nota fiscal, extravio, cobrança, comentário vago).\\nSe houver mais de um problema, escolha o mais grave nesta ordem de prioridade: Defeito > Atraso > Embalagem > Atendimento > Outro.\\nResponda APENAS com uma das seguintes palavras: Atraso, Defeito, Atendimento, Embalagem, Outro. Nenhuma explicação adicional, sem pontuação.\" } ] }, contents: [ { role: 'user', parts: [ { text: 'Comentário: \"' + $json.comentario + '\"' } ] } ], generationConfig: { temperature: 0 } }) }}",
+        "options": {}
+      },
+      "id": "hermex-classificar-com-gemini",
+      "name": "Classificar com Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c01",
+              "name": "id_pedido",
+              "value": "={{ $('Organizar dados').item.json.id_pedido }}",
+              "type": "string"
+            },
+            {
+              "id": "c02",
+              "name": "cliente",
+              "value": "={{ $('Organizar dados').item.json.cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "c03",
+              "name": "email_cliente",
+              "value": "={{ $('Organizar dados').item.json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "c04",
+              "name": "estado",
+              "value": "={{ $('Organizar dados').item.json.estado }}",
+              "type": "string"
+            },
+            {
+              "id": "c05",
+              "name": "nota_nps",
+              "value": "={{ $('Organizar dados').item.json.nota_nps }}",
+              "type": "number"
+            },
+            {
+              "id": "c06",
+              "name": "comentario",
+              "value": "={{ $('Organizar dados').item.json.comentario }}",
+              "type": "string"
+            },
+            {
+              "id": "c07",
+              "name": "resposta_ia",
+              "value": "={{ $json.candidates?.[0]?.content?.parts?.[0]?.text ?? '(sem resposta)' }}",
+              "type": "string"
+            },
+            {
+              "id": "c08",
+              "name": "categoria",
+              "value": "={{ ['Defeito', 'Atraso', 'Embalagem', 'Atendimento', 'Outro'].find(c => String($json.candidates?.[0]?.content?.parts?.[0]?.text ?? '').toLowerCase().includes(c.toLowerCase())) ?? 'Outro' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "hermex-extrair-categoria",
+      "name": "Extrair categoria",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "EMAIL_DA_EQUIPE_POSVENDAS@exemplo.com",
+        "subject": "=[Detrator NPS] {{$json['categoria']}} - Pedido {{$json['id_pedido']}} ({{$json['cliente']}})",
+        "emailType": "text",
+        "message": "=Olá, equipe de Pós-Vendas!\n\nRecebemos uma avaliação de cliente detrator que precisa de tratamento.\n\nCliente: {{$json['cliente']}}\nE-mail: {{$json['email_cliente']}}\nPedido: {{$json['id_pedido']}} - Estado: {{$json['estado']}}\nNota NPS: {{$json['nota_nps']}}\nCategoria (classificada por IA): {{$json['categoria']}}\n\nComentário original do cliente:\n\"{{$json['comentario']}}\"\n\nVALIDAÇÃO HUMANA: a categoria foi sugerida automaticamente por IA. Leia o comentário original e confirme se a classificação está correta antes de tratar o caso. Resposta bruta da IA: {{$json['resposta_ia']}}\n\nPróximos passos:\n1. Validar a categoria.\n2. Entrar em contato com o cliente em até 24h.\n3. Registrar o tratamento.\n\n-- Automação Hermex Log (n8n)",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "hermex-notificar-pós-vendas",
+      "name": "Notificar pós-vendas",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        180
+      ],
+      "webhookId": "hermex-gmail-notificacao"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['email_cliente'] }}",
+        "subject": "=Obrigado pela sua avaliação, {{$json['cliente']}}!",
+        "emailType": "text",
+        "message": "=Olá, {{$json['cliente']}}!\n\nMuito obrigado por avaliar a entrega do seu pedido {{$json['id_pedido']}}.\nSua opinião é muito importante para continuarmos melhorando.\n\nSe quiser contar mais alguma coisa, é só responder este e-mail.\n\nUm abraço,\nEquipe Hermex Log",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "hermex-agradecer-cliente",
+      "name": "Agradecer cliente",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        420
+      ],
+      "webhookId": "hermex-gmail-agradecimento"
+    }
+  ],
+  "connections": {
+    "Nova resposta NPS": {
+      "main": [
+        [
+          {
+            "node": "Buscar dados do cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar dados do cliente": {
+      "main": [
+        [
+          {
+            "node": "Organizar dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Organizar dados": {
+      "main": [
+        [
+          {
+            "node": "Detrator? (nota < 6)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detrator? (nota < 6)": {
+      "main": [
+        [
+          {
+            "node": "Classificar com Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agradecer cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificar com Gemini": {
+      "main": [
+        [
+          {
+            "node": "Extrair categoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extrair categoria": {
+      "main": [
+        [
+          {
+            "node": "Notificar pós-vendas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

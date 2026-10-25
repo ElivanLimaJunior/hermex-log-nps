@@ -1,0 +1,30 @@
+=====================================================================
+ POR QUE O HANDOFF VENDAS -> PÓS-VENDAS É O PONTO MAIS CRÍTICO
+ PARA AUTOMAÇÃO
+=====================================================================
+
+A planilha de handoff é o único ponto do processo em que a
+informação muda de mãos: tudo o que a Equipe de Vendas sabe sobre o
+pedido (cliente, contato, valor, destino, observações como "produto
+frágil" ou "endereço de difícil acesso") precisa chegar intacto à
+Equipe de Pós-Vendas. Por isso ela atende ao critério de
+TRANSFERÊNCIA DE INFORMAÇÕES ENTRE EQUIPES de forma mais direta do que
+qualquer outra atividade. Ela também é altamente REPETITIVA, porque
+acontece em todo pedido, sem exceção. Feita à mão, cresce com o
+volume de vendas e depende da memória de quem preenche e de quem
+precisa lembrar de olhar a planilha. A atividade tem REGRAS CLARAS
+("nova linha com pagamento aprovado = avisar o responsável do
+pós-vendas"), o que permite automatizá-la sem julgamento humano. E é
+CRÍTICA: se o handoff falha, todas as etapas seguintes falham em
+cascata. O pós-vendas não acompanha a entrega, não envia a pesquisa,
+não identifica o detrator e o cliente fica sem resposta. Os próprios
+dados mostram o risco: dos 60 pedidos da pesquisa, apenas 30 constam
+no handoff, e os comentários repetem "ninguém informou nada" e "sem
+resposta do suporte". Por fim, automatizar esse ponto garante
+RASTREABILIDADE: cada passagem de bastão fica registrada com data,
+responsável e notificação enviada, permitindo auditar onde o processo
+quebrou. Como atende aos cinco critérios ao mesmo tempo, o handoff é
+o primeiro e mais importante ponto a automatizar.
+
+Critérios referenciados: transferência de informações entre equipes,
+repetitividade, regras claras, criticidade e rastreabilidade (5 de 5).

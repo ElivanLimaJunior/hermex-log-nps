@@ -1,0 +1,14 @@
+Atividade,Equipe de Vendas,Equipe de Pós-Vendas,Sistema N8N,Sistema de Correios,Liderança
+Registrar envio na planilha de handoff,R,I,I,C,A
+Enviar e-mail de notificação ao pós-vendas,I,A,R,-,I
+Transportar e atualizar rastreio da entrega,I,A,-,R,-
+Verificar entrega e aguardar se não confirmada,-,A,R,C,-
+Abrir ocorrência de atraso e informar cliente,I,R,-,C,A
+Confirmar entrega e registrar data de recebimento,-,A,I,R,-
+Enviar pesquisa de satisfação,-,A,R,-,I
+Registrar resposta NPS na planilha,-,A,R,-,I
+Classificar feedback com IA,-,A,R,-,I
+Notificar equipe sobre cliente detrator,I,I,R,-,A
+Validar classificação e tratar reclamação,C,R,-,C,A
+Enviar e-mail de agradecimento ao cliente,-,A,R,-,-
+Analisar indicadores de NPS e SLA,I,R,-,-,A

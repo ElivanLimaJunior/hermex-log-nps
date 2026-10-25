@@ -1,0 +1,66 @@
+=====================================================================
+ ETAPA 3 - TESTES DO WORKFLOW "Hermex — NPS Automação"
+=====================================================================
+Antes de testar: troque o email_cliente dos pedidos usados (P004,
+P005, P047) na aba pesquisa_satisfacao por um TempEmail, e o "To" do
+nó "Notificar pós-vendas" por outro TempEmail.
+
+---------------------------------------------------------------------
+ CENÁRIO 1 - DETRATOR (obrigatório)
+---------------------------------------------------------------------
+Resposta no Forms:
+  ID do Pedido: P004 | Nota: 2
+  Comentário: Atraso absurdo de mais de 10 dias e ninguém informou nada
+Esperado:
+  [ ] IF foi para o ramo "true"
+  [ ] Gemini respondeu: Atraso
+  [ ] E-mail chegou na caixa da EQUIPE com: cliente Diego Rocha,
+      nota 2, categoria Atraso, comentário original
+  [ ] Nenhum e-mail de agradecimento foi enviado
+Resultado obtido:
+
+
+---------------------------------------------------------------------
+ CENÁRIO 2 - PROMOTOR (obrigatório)
+---------------------------------------------------------------------
+Resposta no Forms:
+  ID do Pedido: P005 | Nota: 10
+  Comentário: Excelente serviço como sempre
+Esperado:
+  [ ] IF foi para o ramo "false"
+  [ ] Gemini NÃO foi chamado (economia de chamadas à IA)
+  [ ] E-mail de agradecimento chegou para o CLIENTE, com o nome
+      "Elena Martins"
+Resultado obtido:
+
+
+---------------------------------------------------------------------
+ CENÁRIO 3 - LIMITE DA REGRA (recomendado)
+---------------------------------------------------------------------
+Resposta no Forms:
+  ID do Pedido: P047 | Nota: 6
+  Comentário: Prazo ok mas a caixa veio danificada
+Esperado pela regra do enunciado (< 6):
+  [ ] Vai para o AGRADECIMENTO (6 não é < 6)
+Reflexão: pela metodologia NPS, 6 é detrator. Esta reclamação de
+embalagem não chega à equipe. Registre isso como melhoria.
+Resultado obtido:
+
+
+---------------------------------------------------------------------
+ CENÁRIO 4 - CLASSIFICAÇÃO COM DOIS PROBLEMAS (opcional)
+---------------------------------------------------------------------
+  ID: P018 | Nota: 1 | "Produto chegou quebrado depois de 15 dias. Quero reembolso"
+Esperado: Defeito (prioridade Defeito > Atraso)
+Resultado obtido:
+
+
+---------------------------------------------------------------------
+ VALIDAÇÃO DA IA EM LOTE (opcional, mas ótimo para o README)
+---------------------------------------------------------------------
+O arquivo gabarito_classificacao.csv tem a classificação "humana"
+dos 27 detratores do dataset (nota < 6). Teste alguns no AI Studio ou
+no n8n e calcule a taxa de acerto:
+  acertos / total testado = ____ %
+Os 2 casos marcados como "ambíguo" são bons para discutir os
+limites da classificação automática.

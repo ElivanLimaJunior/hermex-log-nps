@@ -1,0 +1,53 @@
+=====================================================================
+ ETAPA 4 - VALORES ESPERADOS NO DASHBOARD (gabarito)
+ Calculados a partir de dados/pesquisa_satisfacao.csv com as MESMAS
+ fórmulas do Looker (promotor > 8, detrator < 7, DATE_DIFF corrido)
+=====================================================================
+
+SCORECARDS
+  Respostas ............. 60
+  Promotores (9-10) ..... 15
+  Neutros (7-8) ......... 14
+  Detratores (0-6) ...... 31
+  NPS geral ............. -26,7%   ( 15/60 - 31/60 = 25% - 51,7% )
+  Média dias até envio .. 2,98
+  Média dias até entrega  8,05
+
+TABELA POR ESTADO (ordenada por NPS)
+  UF  Respostas  Prom  Detr     NPS    Dias envio  Dias entrega
+  SP     13       12     0    92,3%      2,00         4,08
+  SC      4        2     0    50,0%      2,00         5,00
+  PR      4        1     0    25,0%      2,00         5,00
+  GO      3        0     1   -33,3%      3,00         7,00
+  MG      5        0     2   -40,0%      2,00         5,80
+  RJ      6        0     3   -50,0%      2,17         6,00
+  RS      4        0     4  -100,0%      3,00         8,00
+  BA      5        0     5  -100,0%      4,00        11,80
+  PE      4        0     4  -100,0%      4,00        11,75
+  CE      4        0     4  -100,0%      4,00        11,75
+  MA      2        0     2  -100,0%      5,00        14,00
+  PA      3        0     3  -100,0%      5,00        14,67
+  AM      3        0     3  -100,0%      5,33        15,67
+
+  (O Looker pode mostrar 92,31% ou 0,92 dependendo da formatação.)
+
+INSIGHTS PARA O README / APRESENTAÇÃO
+ 1. NPS geral negativo (-26,7%): há mais detratores (31) que
+    promotores (15). Mais da metade dos clientes é detratora.
+ 2. Correlação forte entre prazo e satisfação: os 3 estados com NPS
+    positivo (SP, SC, PR) entregam, em média, em até 5 dias corridos;
+    todos os estados com média de 8 dias ou mais têm NPS -100%.
+ 3. SP sustenta o NPS da empresa: 12 dos 15 promotores são de SP.
+    Sem SP, o NPS seria -59,6% (3 promotores e 31 detratores em 47).
+ 4. O atraso começa ANTES do transporte: Norte/Nordeste levam 4-5,3
+    dias só para o pedido ser enviado, contra 2 dias em SP/Sul.
+    Recomendação: investigar a separação/expedição desses pedidos
+    (centro de distribuição regional? coleta?).
+ 5. Expectativa x realidade: o Nordeste entrega em 6-9 dias ÚTEIS,
+    dentro do SLA (6-12), mas tem NPS -100%. Comunicar o prazo certo
+    na venda (assistente Hermex Prazos, Etapa 1) ataca exatamente isso.
+ 6. RS é exceção no Sul: NPS -100% com 8 dias de entrega, contra
+    SC/PR com 5 dias. Vale investigar a rota do RS.
+ 7. Atraso é 67% dos motivos dos detratores (18 de 27 com nota < 6),
+    seguido de Defeito (6). Embalagem e Atendimento aparecem nos
+    comentários, mas como problemas secundários.
